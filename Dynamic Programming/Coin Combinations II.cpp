@@ -19,18 +19,22 @@ int main()
     fio;
     int n, x;
     cin >> n >> x;
-    vector<ll> v(n), dp(x + 5, 0);
-    for (auto& i : v) {
-        cin >> i;
+    vector<ll> c(n);
+    for (auto& i : c) cin >> i;
+    vector<vector<int>> dp(n + 5, vector<int>(x + 5));
+    for (int i = 0; i < n; i++) {
+        dp[i][0] = 1;
     }
-    dp[0] = 1;
-    for (int j = 0; j < n; j++) {
-        for (int i = 1; i <= x; i++) {
-            if (i - v[j] >= 0) {
-                dp[i] = (dp[i - v[j]] + dp[i]) % mod;
+    for (int i = n - 1; i >= 0; i--) {
+        for (int j = 1; j <= x; j++) {
+            int take = 0;
+            if (j >= c[i]) {
+                take = dp[i][j - c[i]];
             }
+            int notTake = dp[i + 1][j];
+            dp[i][j] = (take + notTake) % mod;
         }
     }
-    cout << dp[x];
+    cout << dp[0][x];
     return 0;
 }

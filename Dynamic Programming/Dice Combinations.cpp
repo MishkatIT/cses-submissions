@@ -21,13 +21,11 @@ int main()
     int n;
     cin >> n;
     vector<ll> dp(n + 5);
-    for (int i = 1; i <= min(6, n); i++) {
-        dp[i] = 1;
-    }
+    dp[0] = 1;
     for (int i = 1; i <= n; i++) {
         for (int j = 1; j <= 6; j++) {
-            if (i + j <= n) {
-                dp[i + j] = (dp[i + j] + dp[i] % mod) % mod;
+            if (i - j >= 0) {
+                dp[i] = (dp[i] + dp[i - j]) % mod;
             }
         }
     }

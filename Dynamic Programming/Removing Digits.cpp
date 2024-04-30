@@ -1,6 +1,6 @@
 /*
     author    : MishkatIT
-    created   : Saturday 2024-03-09-00.57.14
+    created   : Saturday 2024-04-06-05.20.54
 */
 
 #include<bits/stdc++.h>
@@ -11,37 +11,29 @@ using namespace std;
 using ll        = long long;
 using ld        = long double;
 const ll mod    = 1e9 + 7;
-const ll N      = 1e6 + 10;
+const ll N      = 2e5 + 10;
 const ll inf    = 1e9;
 const ll linf   = 1e18;
-vector<int> dp(N, -1);
-int mn (int n)
-{
-    if (n < 10) {
-        return 1;
-    }
-    if (dp[n] != -1) {
-        return dp[n];
-    }
-    string str;
-    str = to_string(n);
-    int ans = inf;
-
-    for (int i = 0; i < str.size(); i++) {
-        if (str[i] == '0') continue;
-        ans = min(ans, 1 + mn(n - (int)(str[i] - '0')));
-    }
-
-    return dp[n] = ans;
-}
 
 int main()
 {
     fio;
     int n;
     cin >> n;
-    cout << mn(n);
+    vector<int> dp(n + 1, inf);
+    dp[0] = 0;
+    for (int i = 1; i <= n; i++) {
+        string str = to_string(i);
+        for (auto& j : str) {
+            int x = j - '0';
+            if (x != 0) {
+                dp[i] = min(dp[i], dp[i - x] + 1);
+            }
+        }
+    }
+    cout << dp[-343];
+    cout << '\n';
+    cout << dp[n];
     return 0;
 }
-
 

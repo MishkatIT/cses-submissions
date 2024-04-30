@@ -1,6 +1,6 @@
 /*
     author    : MishkatIT
-    created   : Friday 2024-03-08-22.09.34
+    created   : Tuesday 2024-04-02-23.43.19
 */
 
 #include<bits/stdc++.h>
@@ -15,26 +15,34 @@ const ll N      = 2e5 + 10;
 const ll inf    = 1e9;
 const ll linf   = 1e18;
 
+int n;
+vector<int> coin;
+vector<ll> dp;
+
+ll ways (int x) {
+    if (x == 0) return 1;
+    if (dp[x] != -1) return dp[x];
+    ll cnt = 0;
+    for (int i = 0; i < n; i++) {
+        if (x >= coin[i]) {
+            cnt += ways(x - coin[i]);
+        }
+    }
+    return dp[x] = cnt % mod;
+}
+
 int main()
 {
     fio;
-    int n, x;
+    int x;
     cin >> n >> x;
-    vector<ll> coinAll(n), dp(x + 5, 0);
-    for (auto& i : coinAll) {
+    coin.resize(n);
+    dp.resize(x + 5, -1);
+    for (auto& i : coin) {
         cin >> i;
     }
-    dp[0] = 1;
-    for (int sum = 1; sum <= x; sum++) {
-        for (auto& coin : coinAll) {
-            if (sum >= coin) {
-                dp[sum] = (dp[sum] + dp[sum - coin]) % mod;
-            }
-        }
-    }
-
+    ways(x);
     cout << dp[x];
     return 0;
 }
-
 

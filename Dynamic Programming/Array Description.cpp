@@ -29,13 +29,13 @@ int main() {
     for (int i = 1; i <= n; i++) {
         cin >> v[i];
     }
-    vector<vector<int>> dp(n + 1, vector<int> (m + 1, 0));
-    if (v.front() == 0) {
+    vector<vector<ll>> dp(n + 1, vector<ll>(m + 1, 0));
+    if (v[1] == 0) {
         for (int j = 1; j <= m; j++) {
-            dp[0][j] = 1;
-        } 
+            dp[1][j] = 1;
+        }
     } else {
-        dp[0][v.front()] = 1;
+        dp[1][v[1]] = 1;
     }
     for (int i = 2; i <= n; i++) {
         if (v[i] == 0) {
@@ -47,21 +47,23 @@ int main() {
                 if (j + 1 <= m) {
                     dp[i][j] += dp[i - 1][j + 1];
                 }
+                dp[i][j] %= mod;
             }
         } else {
             dp[i][v[i]] += dp[i - 1][v[i]];
-                if (v[i] - 1 >= 1) {
-                    dp[i][v[i]] += dp[i - 1][v[i] - 1];
-                }
-                if (v[i] + 1 <= m) {
-                    dp[i][v[i]] += dp[i - 1][v[i] + 1];
-                }
+            if (v[i] - 1 >= 1) {
+                dp[i][v[i]] += dp[i - 1][v[i] - 1];
+            }
+            if (v[i] + 1 <= m) {
+                dp[i][v[i]] += dp[i - 1][v[i] + 1];
+            }
+            dp[i][v[i]] %= mod;
         }
     }
-    debug(dp);
     ll ways = 0;
     for (int j = 1; j <= m; j++) {
         ways += dp[n][j];
+        ways %= mod;
     }
     cout << ways << '\n';
     return 0;
